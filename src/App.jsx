@@ -1,7 +1,10 @@
 import './App.css'
 import { languages } from './languages'
+import { useState } from 'react'
 
 function App() {
+
+  const [currentWord, setCurrentWord] = useState("react");
 
   return (
     <main>
@@ -29,6 +32,14 @@ function App() {
             </span>
           )
         })}
+      </section>
+
+      <section className='word'>
+        {currentWord.split("").map((letter, index) => (
+          <span key={index}>
+            {letter.toUpperCase()}
+          </span>
+        ))}
       </section>
     </main>
   )
