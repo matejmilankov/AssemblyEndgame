@@ -6,6 +6,8 @@ function App() {
 
   const [currentWord, setCurrentWord] = useState("react");
 
+  const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
   return (
     <main>
       <header>
@@ -41,6 +43,14 @@ function App() {
           </span>
         ))}
       </section>
+
+      <section className='keyboard'>
+        {alphabet.split("").map(letter => (
+          <button key={letter}>{letter.toUpperCase()}</button>
+        ))}
+      </section>
+
+      <button className="new-game">New Game</button>
     </main>
   )
 }
