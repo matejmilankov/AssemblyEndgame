@@ -10,7 +10,7 @@ function App() {
   const [guessedLetters, setGuessedLetters] = useState([]);
 
   // Derived values
-  const wrongGuessCount = guessedLetters.filter(letter => 
+  const wrongGuessCount = guessedLetters.filter(letter =>
     !currentWord.includes(letter)
   ).length;
   const isGameWon = currentWord.split("").every(letter => guessedLetters.includes(letter));
@@ -27,6 +27,11 @@ function App() {
     );
   }
 
+  const gameStatus = clsx("game-status", {
+    won: isGameWon,
+    lost: isGameLost
+  })
+
   return (
     <main>
       <header>
@@ -34,9 +39,23 @@ function App() {
         <p>Guess the word within 8 attempts to keep the programming world safe from Assembly!</p>
       </header>
 
-      <section className='game-status'>
-        <h2>You win!</h2>
-        <p>Well done!</p>
+      <section className={gameStatus}>
+        {isGameOver ? (
+          isGameWon ? (
+            <>
+              <h2>You win!</h2>
+              <p>Well done! 🎉</p>
+            </>
+          ) : (
+            <>
+              <h2>Game over!</h2>
+              <p>You lose! Better start learning Assembly 😭</p>
+            </>
+          )
+        ) : (
+          null
+        )
+        }
       </section>
 
       <section className='language-chips'>
@@ -69,7 +88,7 @@ function App() {
         {alphabet.split("").map(letter => {
           const isGuessed = guessedLetters.includes(letter);
           const isCorrect = isGuessed && currentWord.includes(letter);
-          
+
           const isWrong = isGuessed && !currentWord.includes(letter);
           const className = clsx({
             correct: isCorrect,
@@ -84,7 +103,7 @@ function App() {
           )
         })}
       </section>
-      
+
       {isGameOver && (
         <button className="new-game">New Game</button>
       )}

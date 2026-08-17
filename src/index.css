@@ -9,8 +9,12 @@ body {
     color: #D9D9D9;
     padding: 20px;
     height: 100vh;
+}
+
+main {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 header {
@@ -30,13 +34,24 @@ header > p {
 }
 
 section.game-status {
-    background-color: #10A95B;
     display: flex;
     flex-direction: column;
     align-items: center;
     color: #F9F4DA;
+    width: 100%;
+    max-width: 350px;
+    min-height: 60px;
     border-radius: 4px;
     margin-block: 30px;
+    
+}
+
+section.game-status.won {
+    background-color: #10A95B;
+}
+
+section.game-status.lost {
+    background-color: #BA2A2A;
 }
 
 section.game-status > p {
@@ -54,13 +69,28 @@ section.language-chips {
     gap: 5px;
     justify-content: center;
     max-width: 350px;
-    margin: 0 auto 36px auto;
+    margin-bottom: 36px;
 }
 
 span.chip {
     border-radius: 3px;
     padding: 4.5px;
     position: relative;
+}
+
+/* Dimmed overlay with skull on "lost" languages */
+span.chip.lost::before {
+    content: "💀";
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 0.85rem;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 section.word {
@@ -117,18 +147,4 @@ button.new-game {
     display: block;
     margin-inline: auto;
     cursor: pointer;
-}
-
-span.chip.lost::before {
-    content: "💀";
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    font-size: 0.85rem;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
 }
