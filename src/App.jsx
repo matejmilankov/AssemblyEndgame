@@ -13,6 +13,9 @@ function App() {
   const wrongGuessCount = guessedLetters.filter(letter => 
     !currentWord.includes(letter)
   ).length;
+  const isGameWon = currentWord.split("").every(letter => guessedLetters.includes(letter));
+  const isGameLost = wrongGuessCount >= (languages.length - 1);
+  const isGameOver = isGameWon || isGameLost;
 
 
   // Static values
@@ -81,8 +84,10 @@ function App() {
           )
         })}
       </section>
-
-      <button className="new-game">New Game</button>
+      
+      {isGameOver && (
+        <button className="new-game">New Game</button>
+      )}
     </main>
   )
 }
