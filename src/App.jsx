@@ -5,9 +5,17 @@ import { clsx } from 'clsx';
 
 function App() {
 
+  // State values
   const [currentWord, setCurrentWord] = useState("react");
   const [guessedLetters, setGuessedLetters] = useState([]);
 
+  // Derived values
+  const wrongGuessCount = guessedLetters.filter(letter => 
+    !currentWord.includes(letter)
+  ).length;
+
+
+  // Static values
   const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
   const addGuessedLetter = (letter) => {
@@ -47,7 +55,7 @@ function App() {
       <section className='word'>
         {currentWord.split("").map((letter, index) => (
           <span key={index}>
-            {letter.toUpperCase()}
+            {guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
           </span>
         ))}
       </section>
@@ -56,12 +64,12 @@ function App() {
         {alphabet.split("").map(letter => {
           const isGuessed = guessedLetters.includes(letter);
           const isCorrect = isGuessed && currentWord.includes(letter);
+          
           const isWrong = isGuessed && !currentWord.includes(letter);
           const className = clsx({
             correct: isCorrect,
             wrong: isWrong
           });
-          console.log(className)
 
           return (
             <button key={letter} className={className}
