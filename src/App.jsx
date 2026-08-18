@@ -67,6 +67,11 @@ function App() {
     return null;
   }
 
+  const handleNewGame = () => {
+    setCurrentWord(getWord());
+    setGuessedLetters([]);
+  }
+
   return (
     <main>
       <header>
@@ -128,7 +133,7 @@ function App() {
       </section>
 
       {isGameOver && (
-        <button className="new-game">New Game</button>
+        <button className="new-game" onClick={handleNewGame}>New Game</button>
       )}
     </main>
   )
