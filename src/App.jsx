@@ -1,4 +1,5 @@
 import './App.css'
+import Confetti from "react-confetti"
 import { useState } from 'react'
 import { clsx } from 'clsx'
 import { getFarewellText } from './utils/utils'
@@ -8,7 +9,7 @@ import { getWord } from './utils/utils'
 function App() {
 
   // State values
-  const [currentWord, setCurrentWord] = useState(() => getWord());
+  const [currentWord, setCurrentWord] = useState("react");
   const [guessedLetters, setGuessedLetters] = useState([]);
 
   // Derived values
@@ -74,6 +75,9 @@ function App() {
 
   return (
     <main>
+
+      {isGameWon && <Confetti recycle={false} numberOfPieces={1000}/>}
+
       <header>
         <h1>Assembly: Endgame</h1>
         <p>Guess the word within 8 attempts to keep the programming world safe from Assembly!</p>
