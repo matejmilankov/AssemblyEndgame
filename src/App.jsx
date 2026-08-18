@@ -40,10 +40,10 @@ function App() {
   const renderGameSatus = () => {
     if (!isGameOver && isLastGuessIncorrect) {
       return (
-      <p className='farewell-message'>
-        {getFarewellText(languages[wrongGuessCount - 1].name)}
-      </p>
-    )
+        <p className='farewell-message'>
+          {getFarewellText(languages[wrongGuessCount - 1].name)}
+        </p>
+      )
     }
 
     if (isGameWon) {
@@ -53,7 +53,7 @@ function App() {
           <p>Well done! 🎉</p>
         </>
       )
-    } 
+    }
 
     if (isGameLost) {
       return (
@@ -102,11 +102,18 @@ function App() {
       </section>
 
       <section className='word'>
-        {currentWord.split("").map((letter, index) => (
-          <span key={index}>
-            {guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
-          </span>
-        ))}
+        {currentWord.split("").map((letter, index) => {
+          const revealLetter = isGameLost || guessedLetters.includes(letter);
+          const className = clsx(
+            isGameLost && !guessedLetters.includes(letter) && "missed-letter"
+          )
+          return (
+            <span key={index}
+                  className={className}>
+              {revealLetter ? letter.toUpperCase() : ""}
+            </span>
+          )
+        })}
       </section>
 
       <section className='keyboard'>
@@ -121,10 +128,10 @@ function App() {
           });
 
           return (
-            <button key={letter} 
-                    className={className}
-                    onClick={() => addGuessedLetter(letter)}
-                    disabled={isGameOver}
+            <button key={letter}
+              className={className}
+              onClick={() => addGuessedLetter(letter)}
+              disabled={isGameOver}
             >
               {letter.toUpperCase()}
             </button>
