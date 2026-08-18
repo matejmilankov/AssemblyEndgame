@@ -1,7 +1,8 @@
 import './App.css'
 import { languages } from './languages'
 import { useState } from 'react'
-import { clsx } from 'clsx';
+import { clsx } from 'clsx'
+import { getFarewellText } from './utils'
 
 function App() {
 
@@ -17,6 +18,8 @@ function App() {
   const isGameLost = wrongGuessCount >= (languages.length - 1);
   const isGameOver = isGameWon || isGameLost;
 
+  const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
+  const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
 
   // Static values
   const alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -29,8 +32,39 @@ function App() {
 
   const gameStatus = clsx("game-status", {
     won: isGameWon,
-    lost: isGameLost
-  })
+    lost: isGameLost,
+    farewell: !isGameOver && isLastGuessIncorrect
+  });
+
+  const renderGameSatus = () => {
+    if (!isGameOver && isLastGuessIncorrect) {
+      return (
+      <p className='farewell-message'>
+        {getFarewellText(languages[wrongGuessCount - 1].name)}
+      </p>
+    )
+    }
+
+    if (isGameWon) {
+      return (
+        <>
+          <h2>You win!</h2>
+          <p>Well done! 🎉</p>
+        </>
+      )
+    } 
+
+    if (isGameLost) {
+      return (
+        <>
+          <h2>Game over!</h2>
+          <p>You lose! Better start learning Assembly 😭</p>
+        </>
+      )
+    }
+
+    return null;
+  }
 
   return (
     <main>
@@ -40,22 +74,7 @@ function App() {
       </header>
 
       <section className={gameStatus}>
-        {isGameOver ? (
-          isGameWon ? (
-            <>
-              <h2>You win!</h2>
-              <p>Well done! 🎉</p>
-            </>
-          ) : (
-            <>
-              <h2>Game over!</h2>
-              <p>You lose! Better start learning Assembly 😭</p>
-            </>
-          )
-        ) : (
-          null
-        )
-        }
+        {renderGameSatus()}
       </section>
 
       <section className='language-chips'>
@@ -65,7 +84,7 @@ function App() {
             backgroundColor: lang.backgroundColor,
             color: lang.color
           }
-          const className = clsx("chip", isLanguageLost && "lost")
+          const className = clsx("chip", isLanguageLost && "lost");
           return (
             <span className={className}
               style={styles}
