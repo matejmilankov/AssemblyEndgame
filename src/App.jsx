@@ -1,6 +1,6 @@
 import './App.css'
 import Confetti from "react-confetti"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { clsx } from 'clsx'
 import { getFarewellText } from './utils/utils'
 import { languages } from './utils/languages'
@@ -11,14 +11,16 @@ function App() {
   // State values
   const [currentWord, setCurrentWord] = useState("react");
   const [guessedLetters, setGuessedLetters] = useState([]);
+  const [seconds, setSeconds] = useState(120);
 
   // Derived values
   const wrongGuessCount = guessedLetters.filter(letter =>
     !currentWord.includes(letter)
   ).length;
+  const isTimeUp = seconds === 0;
   const isGameWon = currentWord.split("").every(letter => guessedLetters.includes(letter));
-  const isGameLost = wrongGuessCount >= (languages.length - 1);
-  const isGameOver = isGameWon || isGameLost;
+  const isGameLost = wrongGuessCount >= (languages.length - 1) || isTimeUp;
+  const isGameOver = isGameWon || isGameLost || isTimeUp;
 
   const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
   const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
@@ -71,6 +73,23 @@ function App() {
   const handleNewGame = () => {
     setCurrentWord(getWord());
     setGuessedLetters([]);
+    setSeconds(120);
+  }
+
+  useEffect(() => {
+    if(isGameOver) return;
+    const interval = setInterval(() => {
+      setSeconds(prevSeconds => prevSeconds - 1);
+    }, 1000)
+    return () => clearInterval(interval);
+  }, [isGameOver]);
+
+  const convertTime = () => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    const formmatedMins = mins < 10 ? `0${mins}` : mins;
+    const formmatedSecs = secs < 10 ? `0${secs}` : secs;
+    return `${formmatedMins}:${formmatedSecs}`;
   }
 
   return (
@@ -103,6 +122,12 @@ function App() {
             </span>
           )
         })}
+      </section>
+
+      <section className='timer'>
+        <p className={clsx(seconds <= 10 && "timer-red")}>
+          {convertTime()}
+        </p>
       </section>
 
       <section className='word'>
