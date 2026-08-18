@@ -1,13 +1,14 @@
 import './App.css'
-import { languages } from './languages'
 import { useState } from 'react'
 import { clsx } from 'clsx'
-import { getFarewellText } from './utils'
+import { getFarewellText } from './utils/utils'
+import { languages } from './utils/languages'
+import { getWord } from './utils/utils'
 
 function App() {
 
   // State values
-  const [currentWord, setCurrentWord] = useState("react");
+  const [currentWord, setCurrentWord] = useState(() => getWord());
   const [guessedLetters, setGuessedLetters] = useState([]);
 
   // Derived values
